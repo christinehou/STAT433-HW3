@@ -66,4 +66,26 @@ flights %>%
 
 #### 2. Add the location of the origin and destination (i.e. the lat and lon) to flights.
 
+``` r
+flights %>%
+  left_join(airports, by = c("dest" = "faa")) %>%
+  left_join(airports, by = c("origin" = "faa"),suffix = c('.dest', '.origin')) %>%
+  select(dest, origin, contains("lat"), contains("lon"))
+```
+
+    # A tibble: 336,776 × 6
+       dest  origin lat.dest lat.origin lon.dest lon.origin
+       <chr> <chr>     <dbl>      <dbl>    <dbl>      <dbl>
+     1 IAH   EWR        30.0       40.7    -95.3      -74.2
+     2 IAH   LGA        30.0       40.8    -95.3      -73.9
+     3 MIA   JFK        25.8       40.6    -80.3      -73.8
+     4 BQN   JFK        NA         40.6     NA        -73.8
+     5 ATL   LGA        33.6       40.8    -84.4      -73.9
+     6 ORD   EWR        42.0       40.7    -87.9      -74.2
+     7 FLL   EWR        26.1       40.7    -80.2      -74.2
+     8 IAD   LGA        38.9       40.8    -77.5      -73.9
+     9 MCO   JFK        28.4       40.6    -81.3      -73.8
+    10 ORD   LGA        42.0       40.8    -87.9      -73.9
+    # … with 336,766 more rows
+
 #### 3. Is there a relationship between the age of a plane and its delays?
