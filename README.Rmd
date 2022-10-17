@@ -56,7 +56,17 @@ flights %>%
 #### 3. Is there a relationship between the age of a plane and its delays?
 
 ```{r,comment=NA}
-
+flights %>%
+  group_by(tailnum) %>%
+  summarize(avg_arr_delay = mean(arr_delay, na.rm = TRUE),
+            avg_dep_delay = mean(dep_delay, na.rm = TRUE)) %>%
+  pivot_longer(c(avg_arr_delay,avg_dep_delay), names_to = "mode", values_to = "delay") %>%
+  left_join(planes, by = "tailnum") %>%
+  ggplot(mapping = aes(x = year, y = delay)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  facet_wrap(vars(mode))
+  
 ```
 
 

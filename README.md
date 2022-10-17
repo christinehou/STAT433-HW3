@@ -89,3 +89,24 @@ flights %>%
     # … with 336,766 more rows
 
 #### 3. Is there a relationship between the age of a plane and its delays?
+
+``` r
+flights %>%
+  group_by(tailnum) %>%
+  summarize(avg_arr_delay = mean(arr_delay, na.rm = TRUE),
+            avg_dep_delay = mean(dep_delay, na.rm = TRUE)) %>%
+  pivot_longer(c(avg_arr_delay,avg_dep_delay), names_to = "mode", values_to = "delay") %>%
+  left_join(planes, by = "tailnum") %>%
+  ggplot(mapping = aes(x = year, y = delay)) +
+  geom_point() +
+  geom_smooth(se = FALSE) +
+  facet_wrap(vars(mode))
+```
+
+    `geom_smooth()` using method = 'gam' and formula 'y ~ s(x, bs = "cs")'
+
+    Warning: Removed 1596 rows containing non-finite values (stat_smooth).
+
+    Warning: Removed 1596 rows containing missing values (geom_point).
+
+![](README_files/figure-gfm/unnamed-chunk-5-1.png)<!-- -->
