@@ -49,6 +49,21 @@ airports %>%
 
 #### You might want to use the size or colour of the points to display the average delay for each airport.
 
+``` r
+flights %>%
+  group_by(dest) %>%
+  summarize(avg_delay = mean(arr_delay, na.rm = TRUE)) %>%
+  left_join(airports, by = c("dest" = "faa")) %>%
+  ggplot(aes(lon, lat, size = avg_delay, color = avg_delay)) +
+  borders("state") +
+  geom_point() +
+  coord_quickmap()
+```
+
+    Warning: Removed 5 rows containing missing values (geom_point).
+
+![](README_files/figure-gfm/unnamed-chunk-3-1.png)<!-- -->
+
 #### 2. Add the location of the origin and destination (i.e. the lat and lon) to flights.
 
 #### 3. Is there a relationship between the age of a plane and its delays?
